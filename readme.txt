@@ -9,6 +9,12 @@ License: GPLv3
 
 Groups is an efficient and powerful solution, providing group-based user membership management, group-based capabilities and content access control.
 
+== This Version ==
+
+This version has been modified by Andy McGuinness for Freedom Games, Inc., with the intent to expand the capabilities of this already-powerful, already-wonderful plugin. Freedom Games, Inc. has a very specific use-case for this plugin, which requires modification. Any donation or thanks for this plugin should go to the original author, "kento" (Karim Rahimpur) www.itthinx.com. This derivative work is also licensed under the GPLv3 license, as is required.
+
+For any issues or questions pertaining to the modifications contained herein, please feel free to [open an issue](https://github.com/Planetary-Lab/groups/issues). Pull requests are welcome to fix any errors or improve code quality, but any functionality improvements would be better served with a fork, as there is no intention to expand this derivative work outside of our own use-case.
+
 == Description ==
 
 Groups is designed as an efficient, powerful and flexible solution for group-oriented membership and content access control.
