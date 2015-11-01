@@ -40,6 +40,7 @@ class Groups_WordPress {
 		// args: string $result, Groups_User $groups_user, string $capability
 		add_filter( 'groups_user_can', array( __CLASS__, 'groups_user_can' ), 10, 3 );
 		add_filter( 'user_has_cap', array( __CLASS__, 'user_has_cap' ), 10, 3 );
+                add_action( 'init', array(__CLASS__, 'create_group_page') );
 	}
 	
 	/**
@@ -128,5 +129,23 @@ class Groups_WordPress {
 		}
 		return $count;
 	}
+
+        /**
+         * Creates the Groups page/custom post type
+         * @return void
+         */
+        public static function create_group_page()
+        {
+            register_post_type( 'groups_group',
+                array(
+                    'labels'        => array(
+                        'name'          => __( 'Groups' ),
+                        'singular_name' => __( 'Group' )
+                    ),
+                    'public'        => true,
+                    'has_archive'   => true
+                )
+            );
+        }
 }
 Groups_WordPress::init();
