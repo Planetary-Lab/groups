@@ -45,6 +45,7 @@ class Groups_Admin {
 	 * Sets up action hooks.
 	 */
 	public static function init() {
+                add_action( 'init', array( __CLASS__, 'create_groups_pages' ) );
 		add_action( 'admin_init', array( __CLASS__, 'admin_init' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'admin_notices' ) );
 		add_action( 'admin_head', array( __CLASS__, 'admin_head' ) );
@@ -52,6 +53,35 @@ class Groups_Admin {
 		add_action( 'network_admin_menu', array( __CLASS__, 'network_admin_menu' ) );
 		add_filter( 'plugin_action_links_'. plugin_basename( GROUPS_FILE ), array( __CLASS__, 'plugin_action_links' ) );
 	}
+
+        public static function create_groups_pages()
+        {
+            register_post_type( 'group_pages',
+                array(
+                    'labels' => array(
+                        'name' => 'Group Pages',
+                        'singular_name' => 'Group Page',
+                        'add_new' => 'Add New',
+                        'add_new_item' => 'Add New Group Page',
+                        'edit' => 'Edit',
+                        'edit_item' => 'Edit Group Page',
+                        'new_item' => 'New Group Page',
+                        'view' => 'View',
+                        'view_item' => 'View Group Page',
+                        'search_items' => 'Search Group Pages',
+                        'not_found' => 'No Group Pages found',
+                        'not_found_in_trash' => 'No Group Pages found in Trash',
+                        'parent' => 'Parent Group Page'
+                    ),
+         
+                    'public' => true,
+                    'menu_position' => 15,
+                    'supports' => array( 'title', 'editor', 'comments', 'thumbnail', 'custom-fields' ),
+                    'taxonomies' => array( '' ),
+                    'has_archive' => true
+                )
+            );
+        }
 
 	/**
 	* Hooks into admin_init.
@@ -145,11 +175,15 @@ class Groups_Admin {
 	 * Admin menu.
 	 */
 	public static function admin_menu() {
+                // Remove custom post type menu
+                remove_menu_page( 'edit.php?post_type=groups_group' ); 
+                remove_menu_page( 'edit.php?post_type=group_pages' ); 
 
 		include_once( GROUPS_ADMIN_LIB . '/groups-admin-groups.php');
 		include_once( GROUPS_ADMIN_LIB . '/groups-admin-capabilities.php');
 		include_once( GROUPS_ADMIN_LIB . '/groups-admin-options.php');
 		include_once( GROUPS_ADMIN_LIB . '/groups-admin-add-ons.php');
+		include_once( GROUPS_ADMIN_LIB . '/groups-admin-pages.php');
 
 		$pages = array();
 
@@ -226,6 +260,17 @@ class Groups_Admin {
 		$pages[] = $page;
 		add_action( 'admin_print_styles-' . $page, array( __CLASS__, 'admin_print_styles' ) );
 		add_action( 'admin_print_scripts-' . $page, array( __CLASS__, 'admin_print_scripts' ) );
+
+		// capabilities
+		$page = add_submenu_page(
+			'groups-admin',
+			__( 'Groups Pages', GROUPS_PLUGIN_DOMAIN ),
+			__( 'Pages', GROUPS_PLUGIN_DOMAIN ),
+			GROUPS_ADMINISTER_GROUPS,
+			'groups-admin-pages',
+			apply_filters( 'groups_add_submenu_page_function', 'groups_admin_pages' )
+		);
+		$pages[] = $page;
 
 		do_action( 'groups_admin_menu', $pages );
 	}

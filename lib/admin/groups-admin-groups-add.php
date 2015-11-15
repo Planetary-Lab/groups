@@ -153,6 +153,33 @@ function groups_admin_groups_add_submit() {
 
 	$group_id = Groups_Group::create( compact( "creator_id", "datetime", "parent_id", "description", "name" ) );
 
+        // Create the group page
+        $post = array(
+          'post_content'   => $description,
+          'post_name'      => strtolower( str_replace( ' ', '-', $name ) ),
+          'post_status'    => 'publish',
+          'post_title'     => $name,
+          'post_type'      => 'group_pages',
+          'post_author'    => $creator_id,
+          'post_date'      => $datetime
+        );  
+
+        $group_page = wp_insert_post( $post );
+
+        if ( is_wp_error( $group_page ) ) {
+            Groups_Admin::add_message( __( 'There was an error making the group page', GROUPS_PLUGIN_DOMAIN ), 'error' );
+        }
+
+        // Create the group's capability
+        $map = array(
+            'capability' => substr( strtolower( str_replace( ' ', '-', $name ) ), 0, 19 )
+        );
+       
+        $group_cap_id = Groups_Capability::create( $map ); 
+
+        // Assign capability to created group page
+        Groups_Post_Access::create( array( 'post_id' => $group_page, 'capability' => $map['capability'] ) );
+
 	if ( $group_id ) {
 		if ( !empty( $_POST['capability_ids'] ) ) {
 			$caps = $_POST['capability_ids'];
@@ -160,6 +187,7 @@ function groups_admin_groups_add_submit() {
 				Groups_Group_Capability::create( array( 'group_id' => $group_id, 'capability_id' => $cap ) );
 			}
 		}
+                Groups_Group_Capability::create( array( 'group_id' => $group_id, 'capability_id' => $group_cap_id ) );
 	} else {
 		if ( !$name ) {
 			Groups_Admin::add_message( __( 'The name must not be empty.', GROUPS_PLUGIN_DOMAIN ), 'error' );
