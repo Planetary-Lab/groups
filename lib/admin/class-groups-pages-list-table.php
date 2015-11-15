@@ -32,8 +32,8 @@ class Groups_Pages_List_Table extends WP_List_Table {
         global $status, $page;
 
         parent::__construct( array(
-            'singular'  => 'group_page',     //singular name of the listed records
-            'plural'    => 'group_pages',    //plural name of the listed records
+            'singular'  => 'laboratory',     //singular name of the listed records
+            'plural'    => 'laboratories',    //plural name of the listed records
             'ajax'      => false        //does this table support ajax?
         ) );
     }
@@ -103,7 +103,7 @@ class Groups_Pages_List_Table extends WP_List_Table {
         $querystr = "
             SELECT $wpdb->posts.* 
             FROM $wpdb->posts
-            WHERE $wpdb->posts.post_type = 'group_pages'
+            WHERE $wpdb->posts.post_type = 'laboratories'
          ";
         $data = $wpdb->get_results($querystr, OBJECT);
 

@@ -68,7 +68,7 @@ function groups_admin_pages() {
 add_action( 'add_meta_boxes', 'add_organization_metaboxes' );
 function add_organization_metaboxes()
 {
-    add_meta_box('organization_logo', 'Organization Logo', 'organization_logo_callback', 'group_pages', 'side', 'default');
+    add_meta_box('organization_logo', 'Organization Logo', 'organization_logo_callback', 'laboratories', 'side', 'default');
 }
 
 

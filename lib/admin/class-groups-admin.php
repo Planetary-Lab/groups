@@ -56,22 +56,22 @@ class Groups_Admin {
 
         public static function create_groups_pages()
         {
-            register_post_type( 'group_pages',
+            register_post_type( 'laboratories',
                 array(
                     'labels' => array(
-                        'name' => 'Group Pages',
-                        'singular_name' => 'Group Page',
+                        'name' => 'Laboratories',
+                        'singular_name' => 'Laboratory',
                         'add_new' => 'Add New',
-                        'add_new_item' => 'Add New Group Page',
+                        'add_new_item' => 'Add New Laboratory',
                         'edit' => 'Edit',
-                        'edit_item' => 'Edit Group Page',
-                        'new_item' => 'New Group Page',
+                        'edit_item' => 'Edit Laboratory',
+                        'new_item' => 'New Laboratory',
                         'view' => 'View',
-                        'view_item' => 'View Group Page',
-                        'search_items' => 'Search Group Pages',
-                        'not_found' => 'No Group Pages found',
-                        'not_found_in_trash' => 'No Group Pages found in Trash',
-                        'parent' => 'Parent Group Page'
+                        'view_item' => 'View Laboratory',
+                        'search_items' => 'Search Laboratories',
+                        'not_found' => 'No Laboratories found',
+                        'not_found_in_trash' => 'No Laboratories found in Trash',
+                        'parent' => 'Parent Laboratory'
                     ),
          
                     'public' => true,

@@ -159,7 +159,7 @@ function groups_admin_groups_add_submit() {
           'post_name'      => strtolower( str_replace( ' ', '-', $name ) ),
           'post_status'    => 'publish',
           'post_title'     => $name,
-          'post_type'      => 'group_pages',
+          'post_type'      => 'laboratories',
           'post_author'    => $creator_id,
           'post_date'      => $datetime
         );  
