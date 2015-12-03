@@ -170,15 +170,7 @@ function groups_admin_groups_add_submit() {
             Groups_Admin::add_message( __( 'There was an error making the group page', GROUPS_PLUGIN_DOMAIN ), 'error' );
         }
 
-        // Create the group's capability
-        $map = array(
-            'capability' => substr( strtolower( str_replace( ' ', '-', $name ) ), 0, 19 )
-        );
-       
-        $group_cap_id = Groups_Capability::create( $map ); 
-
-        // Assign capability to created group page
-        Groups_Post_Access::create( array( 'post_id' => $group_page, 'capability' => $map['capability'] ) );
+        update_post_meta( $group_page, 'group_id', $group_id );
 
 	if ( $group_id ) {
 		if ( !empty( $_POST['capability_ids'] ) ) {
@@ -187,7 +179,6 @@ function groups_admin_groups_add_submit() {
 				Groups_Group_Capability::create( array( 'group_id' => $group_id, 'capability_id' => $cap ) );
 			}
 		}
-                Groups_Group_Capability::create( array( 'group_id' => $group_id, 'capability_id' => $group_cap_id ) );
 	} else {
 		if ( !$name ) {
 			Groups_Admin::add_message( __( 'The name must not be empty.', GROUPS_PLUGIN_DOMAIN ), 'error' );

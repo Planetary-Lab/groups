@@ -109,6 +109,45 @@ require_once( GROUPS_WP_LIB . '/class-groups-wordpress.php' );
 // function groups_widgets_init() {
 //	 register_widget( 'Groups_Widget' );
 // }
+//
+add_action( 'init', 'create_groups_pages' );
+function create_groups_pages()
+{
+    register_post_type( 'laboratories',
+        array(
+            'labels' => array(
+                'name' => 'Laboratories',
+                'singular_name' => 'Laboratory',
+                'add_new' => 'Add New',
+                'add_new_item' => 'Add New Laboratory',
+                'edit' => 'Edit',
+                'edit_item' => 'Edit Laboratory',
+                'new_item' => 'New Laboratory',
+                'view' => 'View',
+                'view_item' => 'View Laboratory',
+                'search_items' => 'Search Laboratories',
+                'not_found' => 'No Laboratories found',
+                'not_found_in_trash' => 'No Laboratories found in Trash',
+                'parent' => 'Parent Laboratory'
+            ),
+ 
+
+            'public' => true,
+            'publicly_queryable' => true,
+            'show_ui' => false,
+            'query_var' => true,
+            'capability_type' => 'post',
+            'hierarchical' => false,
+            'menu_position' => null,
+            'supports' => array('title', 'editor', 'excerpt', 'author'),
+            'can_export' => true,
+            'show_in_menu' => false,
+            'has_archive' => true,
+            'rewrite' => array('slug' => 'laboratory')
+        )
+    );
+}
+
 
 
 

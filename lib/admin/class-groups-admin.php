@@ -45,7 +45,6 @@ class Groups_Admin {
 	 * Sets up action hooks.
 	 */
 	public static function init() {
-                add_action( 'init', array( __CLASS__, 'create_groups_pages' ) );
 		add_action( 'admin_init', array( __CLASS__, 'admin_init' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'admin_notices' ) );
 		add_action( 'admin_head', array( __CLASS__, 'admin_head' ) );
@@ -53,35 +52,6 @@ class Groups_Admin {
 		add_action( 'network_admin_menu', array( __CLASS__, 'network_admin_menu' ) );
 		add_filter( 'plugin_action_links_'. plugin_basename( GROUPS_FILE ), array( __CLASS__, 'plugin_action_links' ) );
 	}
-
-        public static function create_groups_pages()
-        {
-            register_post_type( 'laboratories',
-                array(
-                    'labels' => array(
-                        'name' => 'Laboratories',
-                        'singular_name' => 'Laboratory',
-                        'add_new' => 'Add New',
-                        'add_new_item' => 'Add New Laboratory',
-                        'edit' => 'Edit',
-                        'edit_item' => 'Edit Laboratory',
-                        'new_item' => 'New Laboratory',
-                        'view' => 'View',
-                        'view_item' => 'View Laboratory',
-                        'search_items' => 'Search Laboratories',
-                        'not_found' => 'No Laboratories found',
-                        'not_found_in_trash' => 'No Laboratories found in Trash',
-                        'parent' => 'Parent Laboratory'
-                    ),
-         
-                    'public' => true,
-                    'menu_position' => 15,
-                    'supports' => array( 'title', 'editor', 'comments', 'thumbnail', 'custom-fields' ),
-                    'taxonomies' => array( '' ),
-                    'has_archive' => true
-                )
-            );
-        }
 
 	/**
 	* Hooks into admin_init.
@@ -110,7 +80,7 @@ class Groups_Admin {
 	public static function admin_print_scripts() {
 		global $groups_version;
 		// this one's currently empty
-		//wp_enqueue_script( 'groups_admin', GROUPS_PLUGIN_URL . 'js/groups_admin.js', array( ), $groups_version );
+		wp_enqueue_script( 'groups_admin', GROUPS_PLUGIN_URL . 'js/groups_admin.js', array( ), $groups_version );
 		Groups_UIE::enqueue( 'select' );
 	}
 
@@ -177,7 +147,7 @@ class Groups_Admin {
 	public static function admin_menu() {
                 // Remove custom post type menu
                 remove_menu_page( 'edit.php?post_type=groups_group' ); 
-                remove_menu_page( 'edit.php?post_type=group_pages' ); 
+                remove_menu_page( 'edit.php?post_type=laboratories' ); 
 
 		include_once( GROUPS_ADMIN_LIB . '/groups-admin-groups.php');
 		include_once( GROUPS_ADMIN_LIB . '/groups-admin-capabilities.php');
@@ -271,6 +241,8 @@ class Groups_Admin {
 			apply_filters( 'groups_add_submenu_page_function', 'groups_admin_pages' )
 		);
 		$pages[] = $page;
+		add_action( 'admin_print_styles-' . $page, array( __CLASS__, 'admin_print_styles' ) );
+		add_action( 'admin_print_scripts-' . $page, array( __CLASS__, 'admin_print_scripts' ) );
 
 		do_action( 'groups_admin_menu', $pages );
 	}

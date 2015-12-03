@@ -422,7 +422,7 @@ function groups_admin_groups() {
 			$output .= "<td class='group-id'>";
 			$output .= $result->group_id;
 			$output .= "</td>";
-			$output .= "<td class='group-name'>" . stripslashes( wp_filter_nohtml_kses( $result->name ) ) . "</td>";
+                        $output .= "<td class='group-name'>" . stripslashes( wp_filter_nohtml_kses( $result->name ) ) . "</td>";
 			$output .= "<td class='group-description'>" . stripslashes( wp_filter_nohtml_kses( $result->description ) ) . "</td>";
 
 			$output .= '<td class="capabilities">';

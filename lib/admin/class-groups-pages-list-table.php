@@ -46,9 +46,8 @@ class Groups_Pages_List_Table extends WP_List_Table {
     function column_title($item){
         //Build row actions
         $actions = array(
-            'edit'      => sprintf('<a href="%1$s">Edit</a>',get_edit_post_link($item->ID))
+            'edit'      => sprintf('<a href="?page=%s&action=%s&laboratory=%s">Edit</a>',$_REQUEST['page'],'edit',$item->ID)
         );
-        var_dump(get_edit_post_link($item->ID));
         
         //Return the title contents
         return sprintf('%1$s <span style="color:silver">(id:%2$s)</span>%3$s',
