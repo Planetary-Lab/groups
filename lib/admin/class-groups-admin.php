@@ -159,7 +159,7 @@ class Groups_Admin {
 
 		// main
 		$page = add_menu_page(
-			_x( 'Groups', 'page-title', GROUPS_PLUGIN_DOMAIN ),
+			_x( 'Laboratories', 'page-title', GROUPS_PLUGIN_DOMAIN ),
 			'Groups', // don't translate, reasons: a) Groups menu title consistency and b) http://core.trac.wordpress.org/ticket/18857 translation affects $screen->id
 			GROUPS_ADMINISTER_GROUPS,
 			'groups-admin',
@@ -195,7 +195,7 @@ class Groups_Admin {
 		// capabilities
 		$page = add_submenu_page(
 			'groups-admin',
-			__( 'Groups Capabilities', GROUPS_PLUGIN_DOMAIN ),
+			__( 'Laboratories Capabilities', GROUPS_PLUGIN_DOMAIN ),
 			__( 'Capabilities', GROUPS_PLUGIN_DOMAIN ),
 			GROUPS_ADMINISTER_GROUPS,
 			'groups-admin-capabilities',
@@ -208,7 +208,7 @@ class Groups_Admin {
 		// options
 		$page = add_submenu_page(
 			'groups-admin',
-			__( 'Groups options', GROUPS_PLUGIN_DOMAIN ),
+			__( 'Laboratories Options', GROUPS_PLUGIN_DOMAIN ),
 			__( 'Options', GROUPS_PLUGIN_DOMAIN ),
 			GROUPS_ADMINISTER_OPTIONS,
 			'groups-admin-options',
@@ -234,7 +234,7 @@ class Groups_Admin {
 		// capabilities
 		$page = add_submenu_page(
 			'groups-admin',
-			__( 'Groups Pages', GROUPS_PLUGIN_DOMAIN ),
+			__( 'Laboratories Pages', GROUPS_PLUGIN_DOMAIN ),
 			__( 'Pages', GROUPS_PLUGIN_DOMAIN ),
 			GROUPS_ADMINISTER_GROUPS,
 			'groups-admin-pages',
@@ -258,8 +258,8 @@ class Groups_Admin {
 
 		// main
 		$page = add_menu_page(
-			__( 'Groups', GROUPS_PLUGIN_DOMAIN ),
-			__( 'Groups', GROUPS_PLUGIN_DOMAIN ),
+			__( 'Laboratories', GROUPS_PLUGIN_DOMAIN ),
+			__( 'Laboratories', GROUPS_PLUGIN_DOMAIN ),
 			GROUPS_ADMINISTER_GROUPS,
 			'groups-network-admin',
 			apply_filters( 'groups_add_menu_page_function', 'groups_network_admin_options' ),
