@@ -231,19 +231,6 @@ class Groups_Admin {
 		add_action( 'admin_print_styles-' . $page, array( __CLASS__, 'admin_print_styles' ) );
 		add_action( 'admin_print_scripts-' . $page, array( __CLASS__, 'admin_print_scripts' ) );
 
-		// capabilities
-		$page = add_submenu_page(
-			'groups-admin',
-			__( 'Laboratories Pages', GROUPS_PLUGIN_DOMAIN ),
-			__( 'Pages', GROUPS_PLUGIN_DOMAIN ),
-			GROUPS_ADMINISTER_GROUPS,
-			'groups-admin-pages',
-			apply_filters( 'groups_add_submenu_page_function', 'groups_admin_pages' )
-		);
-		$pages[] = $page;
-		add_action( 'admin_print_styles-' . $page, array( __CLASS__, 'admin_print_styles' ) );
-		add_action( 'admin_print_scripts-' . $page, array( __CLASS__, 'admin_print_scripts' ) );
-
 		do_action( 'groups_admin_menu', $pages );
 	}
 
