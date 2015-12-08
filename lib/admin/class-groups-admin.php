@@ -137,7 +137,7 @@ class Groups_Admin {
 	public static function admin_head() {
 		global $submenu;
 		if ( isset( $submenu['groups-admin'] ) ) {
-			$submenu['groups-admin'][0][0] = _x( 'Groups', 'menu item title', GROUPS_PLUGIN_DOMAIN );
+			$submenu['groups-admin'][0][0] = _x( 'Laboratories', 'menu item title', GROUPS_PLUGIN_DOMAIN );
 		}
 	}
 
@@ -160,7 +160,7 @@ class Groups_Admin {
 		// main
 		$page = add_menu_page(
 			_x( 'Laboratories', 'page-title', GROUPS_PLUGIN_DOMAIN ),
-			'Groups', // don't translate, reasons: a) Groups menu title consistency and b) http://core.trac.wordpress.org/ticket/18857 translation affects $screen->id
+			'Laboratories', // don't translate, reasons: a) Groups menu title consistency and b) http://core.trac.wordpress.org/ticket/18857 translation affects $screen->id
 			GROUPS_ADMINISTER_GROUPS,
 			'groups-admin',
 			apply_filters( 'groups_add_menu_page_function', 'groups_admin_groups' ),

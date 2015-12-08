@@ -44,6 +44,9 @@ function groups_admin_pages() {
                 case 'edit' :
                     if ( !( $page_id = groups_admin_pages_edit_submit() ) ) {
                         return groups_admin_groups_edit( $_POST['page_id'] );
+                    } else {
+                        $group = Groups_Group::read( $group_id );
+                        Groups_Admin::add_message( sprintf( __( "The <em>%s</em> group has been created.", GROUPS_PLUGIN_DOMAIN ), stripslashes( wp_filter_nohtml_kses( $group->name ) ) ) );
                     } 
                     break;
             }

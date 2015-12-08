@@ -33,6 +33,7 @@ define( 'GROUPS_ADMIN_GROUPS_FILTER_NONCE', 'groups-filter-nonce' );
 require_once( GROUPS_CORE_LIB . '/class-groups-pagination.php' );
 require_once( GROUPS_ADMIN_LIB . '/groups-admin-groups-add.php');
 require_once( GROUPS_ADMIN_LIB . '/groups-admin-groups-edit.php');
+require_once( GROUPS_ADMIN_LIB . '/groups-admin-pages-edit.php');
 require_once( GROUPS_ADMIN_LIB . '/groups-admin-groups-remove.php');
 
 /**
@@ -64,8 +65,8 @@ function groups_admin_groups() {
 				}
 				break;
 			case 'edit' :
-				if ( !( $group_id = groups_admin_groups_edit_submit() ) ) {
-					return groups_admin_groups_edit( $_POST['group-id-field'] );
+				if ( !( $group_id = groups_admin_pages_edit_submit() ) ) {
+					return groups_admin_pages_edit( $_POST['groups_group_id'] );
 				} else {
 					$group = Groups_Group::read( $group_id );
 					Groups_Admin::add_message( sprintf( __( 'The <em>%s</em> group has been updated.', GROUPS_PLUGIN_DOMAIN ), stripslashes( wp_filter_nohtml_kses( $group->name ) ) ) );
@@ -124,8 +125,8 @@ function groups_admin_groups() {
 				return groups_admin_groups_add();
 				break;
 			case 'edit' :
-				if ( isset( $_GET['group_id'] ) ) {
-					return groups_admin_groups_edit( $_GET['group_id'] );
+				if ( isset( $_GET['laboratory'] ) ) {
+					return groups_admin_pages_edit( $_GET['laboratory'] );
 				}
 				break;
 			case 'remove' :
@@ -197,7 +198,7 @@ function groups_admin_groups() {
 		'<div class="manage-groups">' .
 		'<div>' .
 		'<h2>' .
-		_x( 'Groups', 'page-title', GROUPS_PLUGIN_DOMAIN ) .
+		_x( 'Laboratories', 'page-title', GROUPS_PLUGIN_DOMAIN ) .
 		'</h2>' .
 		'</div>';
 
@@ -289,6 +290,25 @@ function groups_admin_groups() {
 	);
 
 	$results = $wpdb->get_results( $query, OBJECT );
+
+        // Limit the groups visible to be only the groups the user belongs to -- unless they're an admin
+        foreach ( $results as $index=>$result ) {
+            if ( !current_user_can( 'manage_options' ) ) {
+                $group = new Groups_Group( $result->group_id ); 
+                $users = $group->__get( 'users' );
+                $in_group = false;
+                
+                foreach ( $users as $user ) {
+                    if ( $user->ID == get_current_user_id() ) {
+                        $in_group = true;
+                    } 
+                }
+
+                if ( !$in_group ) {
+                    unset( $results[$index] );
+                }
+            }
+        }
 
 	$column_display_names = array(
 		'group_id'	 => __( 'Id', GROUPS_PLUGIN_DOMAIN ),
@@ -413,6 +433,20 @@ function groups_admin_groups() {
 
 			$result = $results[$i];
 
+                        $args = array(
+                            'meta_query'        => array(
+                                array(
+                                    'key'   => 'group_id',
+                                    'value' => $result->group_id
+                                )
+                            ),
+                            'post_type'         => 'laboratories',
+                            'posts_per_page'    => 1,
+                            'fields'            => 'ids'
+                        );
+
+                        $laboratory = get_posts( $args );
+
 			$output .= '<tr class="' . ( $i % 2 == 0 ? 'even' : 'odd' ) . '">';
 
 			$output .= '<th class="check-column">';
@@ -454,7 +488,7 @@ function groups_admin_groups() {
 			$output .= '</td>';
 
 			$output .= "<td class='edit'>";
-			$output .= "<a href='" . esc_url( add_query_arg( 'paged', $paged, $current_url ) ) . "&action=edit&group_id=" . $result->group_id . "' alt='" . __( 'Edit', GROUPS_PLUGIN_DOMAIN) . "'><img src='". GROUPS_PLUGIN_URL ."images/edit.png'/></a>";
+                        $output .= "<a href='" . esc_url( add_query_arg( 'paged', $paged, $current_url ) ) . "&action=edit&group_id=" . $result->group_id . "&laboratory=" . $laboratory[0] . "'  alt='" . __( 'Edit', GROUPS_PLUGIN_DOMAIN) . "'><img src='". GROUPS_PLUGIN_URL ."images/edit.png'/></a>";
 			$output .= "</td>";
 
 			$output .= "<td class='remove'>";

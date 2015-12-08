@@ -18,8 +18,8 @@
  * @package groups
  * @since groups 1.0.0
  *
- * Plugin Name: Groups
- * Plugin URI: http://www.itthinx.com/plugins/groups
+ * Plugin Name: Groups -- Extended
+ * Plugin URI: http://planetary-lab.org
  * Description: Groups provides group-based user membership management, group-based capabilities and content access control.
  * Version: 1.8.1
  * Author: itthinx

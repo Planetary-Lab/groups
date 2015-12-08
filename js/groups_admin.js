@@ -7,7 +7,7 @@ jQuery(function($){
       delImgLink = metaBox.find( '.delete-custom-img'),
       imgContainer = metaBox.find( '.custom-img-container'),
       imgIdInput = metaBox.find( '.custom-img-id' );
-  
+
   // ADD IMAGE LINK
   addImgLink.on( 'click', function( event ){
     
