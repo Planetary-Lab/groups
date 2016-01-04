@@ -146,6 +146,28 @@ function create_groups_pages()
             'rewrite' => array('slug' => 'laboratory')
         )
     );
+
+    register_taxonomy(
+        'laboratory_category',
+        'laboratories',
+        array(
+            'label' => __( 'Laboratory Category' ),
+            'rewrite' => array( 'slug' => 'category' ),
+            'hierarchical'  => true,
+            'show_in_menu' => false
+        )
+    );
+
+    register_taxonomy(
+        'laboratory_tag',
+        'laboratories',
+        array(
+            'label' => __( 'Laboratory Tag' ),
+            'rewrite' => array( 'slug' => 'tag' ),
+            'hierarchical'  => false,
+            'show_in_menu' => false
+        )
+    );
 }
 
 

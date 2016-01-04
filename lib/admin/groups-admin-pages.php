@@ -87,7 +87,9 @@ function groups_admin_pages() {
 add_action( 'add_meta_boxes', 'add_learndash_metaboxes' );
 function add_learndash_metaboxes()
 {
-    add_meta_box('group_id', 'Associated Organization', 'group_id_callback', 'sfwd-courses', 'side', 'default');
+    add_meta_box('group_id', 'Associated Laboratory', 'group_id_callback', 'sfwd-courses', 'side', 'default');
+    add_meta_box('sponsor_id', 'Course Sponsors', 'sponsor_id_callback', 'sfwd-courses', 'side', 'default');
+    add_meta_box('featured', 'Is Course Featured?', 'featured_callback', 'sfwd-courses', 'side', 'default');
 }
 
 
@@ -105,17 +107,25 @@ function group_id_callback()
     $html .= '</p>';
 
     if ( count($groups) > 0 ) {
-        $html .= '<select name="group_id" id="group_id"><option value="">Select from your groups:</option>';
-
-        foreach ( $groups as $group ) {
-            if ( $selected == $group->group_id ) {
-                $html .= '<option name="' . $group->name . '" value="' . $group->group_id . '" selected="true">' . $group->name . '</option>';
-            } else {
-                $html .= '<option name="' . $group->name . '" value="' . $group->group_id . '">' . $group->name . '</option>';
+        $html .= '<select name="group_id[]" id="group_id" multiple="multiple" class="select group_ids">';
+        
+            $html .= '<option value="">Select from your groups:</option>';
+            foreach ( $groups as $group ) {
+                if ( $selected ) {
+                    foreach ( $selected as $current ) {
+                        if ( $current == $group->group_id ) {
+                            $html .= '<option name="' . $group->name . '" value="' . $group->group_id . '" selected="true">' . $group->name . '</option>';
+                        } else {
+                            $html .= '<option name="' . $group->name . '" value="' . $group->group_id . '">' . $group->name . '</option>';
+                        }
+                    }
+                } else {
+                    $html .= '<option name="' . $group->name . '" value="' . $group->group_id . '">' . $group->name . '</option>';
+                }
             }
-        }
 
         $html .= '</select>';
+        $html .= Groups_UIE::render_select( '.select.group_ids' );
     } else {
         $html .= '<p>You are not a member of any organizations.</p>';
     }
@@ -123,10 +133,74 @@ function group_id_callback()
     echo $html;
 }
 
-function save_group_id($id) {
+function sponsor_id_callback()
+{
+    global $wpdb;
+
+    $groups_table = _groups_get_tablename( 'group' );
+    $groups = $wpdb->get_results( "SELECT * FROM $groups_table ORDER BY name" );
+    $selected = get_post_meta(get_the_ID(), 'sponsor_id', true);
+
+    wp_nonce_field(plugin_basename(__FILE__), 'sponsor_id_nonce');
+     
+    $html = '<p class="description">';
+        $html .= 'Associate this content with a sponsor.';
+    $html .= '</p>';
+
+    if ( count($groups) > 0 ) {
+        $html .= '<select name="sponsor_id[]" id="sponsor_id" multiple="multiple" class="select group_ids">';
+        
+            $html .= '<option value="">Select from groups:</option>';
+            foreach ( $groups as $group ) {
+                if ( $selected ) {
+                    foreach ( $selected as $current ) {
+                        if ( $current == $group->group_id ) {
+                            $html .= '<option name="' . $group->name . '" value="' . $group->group_id . '" selected="true">' . $group->name . '</option>';
+                        } else {
+                            $html .= '<option name="' . $group->name . '" value="' . $group->group_id . '">' . $group->name . '</option>';
+                        }
+                    }
+                } else {
+                    $html .= '<option name="' . $group->name . '" value="' . $group->group_id . '">' . $group->name . '</option>';
+                }
+            }
+
+        $html .= '</select>';
+        $html .= Groups_UIE::render_select( '.select.sponsor_ids' );
+    } else {
+        $html .= '<p>No organizations.</p>';
+    }
+
+    echo $html;
+}
+
+function featured_callback()
+{
+    $featured = get_post_meta(get_the_ID(), 'featured', true);
+    $featured == true ? $selected = ' checked="true"' : $selected = '';
+
+    wp_nonce_field(plugin_basename(__FILE__), 'featured_nonce');
+     
+    $html = '<p class="description">';
+        $html .= 'Whether or not to display this content on the homepage.';
+    $html .= '</p>';
+
+    $html .= '<input type="checkbox"' . $selected . ' name="featured" id="featured" />';
+    $html .= '<label for="featured">Display this course on the homepage</label>';
+
+    echo $html;
+}
+
+function save_course_metadata($id) {
  
     /* --- security verification --- */
     if(!wp_verify_nonce($_POST['group_id_nonce'], plugin_basename(__FILE__))) {
+      return $id;
+    } // end if
+    if(!wp_verify_nonce($_POST['sponsor_id_nonce'], plugin_basename(__FILE__))) {
+      return $id;
+    } // end if
+    if(!wp_verify_nonce($_POST['featured_nonce'], plugin_basename(__FILE__))) {
       return $id;
     } // end if
        
@@ -137,6 +211,12 @@ function save_group_id($id) {
     if (!empty( $_POST['group_id'] ) ) {
         update_post_meta( $id, 'group_id', $_POST['group_id'] );
     }
+    if (!empty( $_POST['sponsor_id'] ) ) {
+        update_post_meta( $id, 'sponsor_id', $_POST['sponsor_id'] );
+    }
+    if (!empty( $_POST['featured'] ) ) {
+        update_post_meta( $id, 'featured', $_POST['featured'] );
+    }
        
 } // end save_custom_meta_data
-add_action('save_post', 'save_group_id');
+add_action('save_post', 'save_course_metadata');
