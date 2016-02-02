@@ -438,7 +438,7 @@ function groups_admin_groups() {
                          'meta_query' => array(
                          array(
                                  'key' => 'group_id',
-                                'value' => $group_id[0],
+                                 'value' => $result->group_id,
                                 'compare'   => 'LIKE'
                                  )
                             ) );
