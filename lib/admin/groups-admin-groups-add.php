@@ -172,7 +172,7 @@ function groups_admin_groups_add_submit() {
 
         update_post_meta( $group_page, 'group_id', $group_id );
 
-        die('Group page ID: ' . (string) $group_page);
+        die('Group ID: ' . (string) $group_id);
 
 	if ( $group_id ) {
 		if ( !empty( $_POST['capability_ids'] ) ) {
