@@ -154,7 +154,7 @@ function groups_admin_groups_add_submit() {
 	$group_id = Groups_Group::create( compact( "creator_id", "datetime", "parent_id", "description", "name" ) );
 
         // Create the group page
-        $post = array(
+        $post_args = array(
           'post_content'   => $description,
           'post_name'      => strtolower( str_replace( ' ', '-', $name ) ),
           'post_status'    => 'publish',
@@ -164,13 +164,14 @@ function groups_admin_groups_add_submit() {
           'post_date'      => $datetime
         );  
 
-        $group_page = wp_insert_post( $post );
+        $group_page = wp_insert_post( $post_args);
 
         if ( is_wp_error( $group_page ) ) {
             Groups_Admin::add_message( __( 'There was an error making the group page', GROUPS_PLUGIN_DOMAIN ), 'error' );
         }
 
         update_post_meta( $group_page, 'group_id', $group_id );
+        die($group_page);
 
 	if ( $group_id ) {
 		if ( !empty( $_POST['capability_ids'] ) ) {
