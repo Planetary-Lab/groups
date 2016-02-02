@@ -172,8 +172,6 @@ function groups_admin_groups_add_submit() {
 
         $result = update_post_meta( $group_page, 'group_id', $group_id );
 
-        die( (string) $result );
-
 	if ( $group_id ) {
 		if ( !empty( $_POST['capability_ids'] ) ) {
 			$caps = $_POST['capability_ids'];
