@@ -433,16 +433,21 @@ function groups_admin_groups() {
 
 			$result = $results[$i];
 
-                        $args = array(
-                            'meta_key'   => 'group_id',
-                            'meta_value' => $result->group_id,
-                            'post_type'         => 'laboratories',
-                            'posts_per_page'    => 1,
-                            'fields'            => 'ids'
-                        );
-
-                        $laboratory = get_posts( $args );
-                        var_dump($laboratory);
+                        $pages_args = array(
+                         'post_type' => 'laboratories',
+                         'meta_query' => array(
+                         array(
+                                 'key' => 'group_id',
+                                'value' => $group_id[0],
+                                'compare'   => 'LIKE'
+                                 )
+                            ) );
+                    $the_query = new WP_Query( $pages_args );       
+                         if ( $the_query->have_posts()) : while ($the_query->have_posts()) : $the_query->the_post();
+                         $laboratory = get_the_ID();
+                         endwhile;
+                        wp_reset_postdata();
+                         endif;
 
 			$output .= '<tr class="' . ( $i % 2 == 0 ? 'even' : 'odd' ) . '">';
 
@@ -485,7 +490,7 @@ function groups_admin_groups() {
 			$output .= '</td>';
 
 			$output .= "<td class='edit'>";
-                        $output .= "<a href='" . esc_url( add_query_arg( 'paged', $paged, $current_url ) ) . "&action=edit&group_id=" . $result->group_id . "&laboratory=" . $laboratory[0] . "'  alt='" . __( 'Edit', GROUPS_PLUGIN_DOMAIN) . "'><img src='". GROUPS_PLUGIN_URL ."images/edit.png'/></a>";
+                        $output .= "<a href='" . esc_url( add_query_arg( 'paged', $paged, $current_url ) ) . "&action=edit&group_id=" . $result->group_id . "&laboratory=" . $laboratory . "'  alt='" . __( 'Edit', GROUPS_PLUGIN_DOMAIN) . "'><img src='". GROUPS_PLUGIN_URL ."images/edit.png'/></a>";
 			$output .= "</td>";
 
 			$output .= "<td class='remove'>";
