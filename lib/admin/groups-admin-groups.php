@@ -446,6 +446,7 @@ function groups_admin_groups() {
                         );
 
                         $laboratory = get_posts( $args );
+                        var_dump($laboratory);
 
 			$output .= '<tr class="' . ( $i % 2 == 0 ? 'even' : 'odd' ) . '">';
 
