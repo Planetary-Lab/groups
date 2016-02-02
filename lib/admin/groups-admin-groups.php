@@ -435,7 +435,7 @@ function groups_admin_groups() {
 
                         $args = array(
                             'meta_key'   => 'group_id',
-                            'meta_value' => $result->group_id
+                            'meta_value' => $result->group_id,
                             'post_type'         => 'laboratories',
                             'posts_per_page'    => 1,
                             'fields'            => 'ids'
