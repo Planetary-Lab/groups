@@ -34,8 +34,10 @@ function groups_admin_pages_edit( $page_id ) {
 
         // Check to see if the user can actually edit this page
         $group_id = get_post_meta( $page_id, 'group_id', true );
+        var_dump($group_id);,
         $group = new Groups_Group( $group_id );
         $groups_users = $group->__get( 'users' );
+        var_dump($groups_users);
         $in_group = false;
         foreach ( $groups_users as $user ) {
             if ( $user->ID == get_current_user_id() ) {
