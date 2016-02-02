@@ -164,14 +164,14 @@ function groups_admin_groups_add_submit() {
           'post_date'      => $datetime
         );  
 
-        $group_page = wp_insert_post( $post_args);
+        $group_page = wp_insert_post( $post_args );
 
         if ( is_wp_error( $group_page ) ) {
+            die('Something went wrong');
             Groups_Admin::add_message( __( 'There was an error making the group page', GROUPS_PLUGIN_DOMAIN ), 'error' );
         }
 
         update_post_meta( $group_page, 'group_id', $group_id );
-        die($group_page);
 
 	if ( $group_id ) {
 		if ( !empty( $_POST['capability_ids'] ) ) {
