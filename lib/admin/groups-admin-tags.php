@@ -24,7 +24,6 @@ if ( !defined( 'ABSPATH' ) ) {
 }
 
 // admin defines
-define( 'GROUPS_GROUPS_PER_PAGE', 10 );
 define( 'GROUPS_ADMIN_TAGS_NONCE_1', 'tags-nonce-1');
 define( 'GROUPS_ADMIN_TAGS_NONCE_2', 'tags-nonce-2');
 

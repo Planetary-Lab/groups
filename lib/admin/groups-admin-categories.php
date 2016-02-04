@@ -24,7 +24,6 @@ if ( !defined( 'ABSPATH' ) ) {
 }
 
 // admin defines
-define( 'GROUPS_GROUPS_PER_PAGE', 10 );
 define( 'GROUPS_ADMIN_CATEGORIES_NONCE_1', 'categories-nonce-1');
 define( 'GROUPS_ADMIN_CATEGORIES_NONCE_2', 'categories-nonce-2');
 
