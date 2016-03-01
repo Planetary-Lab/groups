@@ -32,32 +32,32 @@ function groups_admin_pages_edit( $page_id ) {
     global $wpdb;
 
 
-        // Check to see if the user can actually edit this page
-        $group_id = get_post_meta( $page_id, 'group_id', true );
-        $group = new Groups_Group( $group_id );
-        $groups_users = $group->__get( 'users' );
-        $in_group = false;
-        foreach ( $groups_users as $user ) {
-            if ( $user->ID == get_current_user_id() ) {
-                $in_group = true;
-            }
+    // Check to see if the user can actually edit this page
+    $group_id = get_post_meta( $page_id, 'group_id', true );
+    $group = new Groups_Group( $group_id );
+    $groups_users = $group->__get( 'users' );
+    $in_group = false;
+    foreach ( $groups_users as $user ) {
+        if ( $user->ID == get_current_user_id() ) {
+            $in_group = true;
         }
-        if ( !$in_group ) {
-        wp_die( __( 'Only group members can edit this page. You do not have sufficient permissions to edit this page.', GROUPS_PLUGIN_DOMAIN ) );
-        }
+    }
+    if ( !$in_group ) {
+    wp_die( __( 'Only group members can edit this page. You do not have sufficient permissions to edit this page.', GROUPS_PLUGIN_DOMAIN ) );
+    }
 
-        $args = array(
-            'role'  => 'author'
-        );
-        $users = get_users( );
-        $page = get_post( $page_id );
-        $upload_link = esc_url( get_upload_iframe_src( 'image', $page->ID ) );
-        $org_logo_id = get_post_meta( $page->ID, 'organization_logo', true );
-        $org_logo_src = wp_get_attachment_image_src( $org_logo_id, 'full' );
-        $has_logo = is_array( $org_logo_src );
-        $lab_photo_id = get_post_meta($page->ID, 'laboratory_photo', true);
-        $lab_photo_src = wp_get_attachment_image_src( $lab_photo_id, 'full' );
-        $has_lab_photo = is_array( $lab_photo_src );
+    $args = array(
+        'role'  => 'author'
+    );
+    $users = get_users( );
+    $page = get_post( $page_id );
+    $upload_link = esc_url( get_upload_iframe_src( 'image', $page->ID ) );
+    $org_logo_id = get_post_meta( $page->ID, 'organization_logo', true );
+    $org_logo_src = wp_get_attachment_image_src( $org_logo_id, 'full' );
+    $has_logo = is_array( $org_logo_src );
+    $lab_photo_id = get_post_meta($page->ID, 'laboratory_photo', true);
+    $lab_photo_src = wp_get_attachment_image_src( $lab_photo_id, 'full' );
+    $has_lab_photo = is_array( $lab_photo_src );
 
     $output = '';
 
@@ -66,6 +66,9 @@ function groups_admin_pages_edit( $page_id ) {
     $current_url = remove_query_arg( 'laboratory', $current_url );
     $current_url = remove_query_arg( 'group_id', $current_url );
     $current_url = remove_query_arg( 'paged', $current_url );
+
+    $all_spheres = get_terms('laboratory_sphere_of_science', array( 'hide_empty' => 0 ) );
+    $selected_spheres = wp_get_object_terms( $page->ID, 'laboratory_sphere_of_science', array( 'fields' => 'ids' ) );
 
         // Header for the form
     $output .= '<form id="edit-page" action="' . esc_url( $current_url ) . '" method="post">';
@@ -85,21 +88,20 @@ function groups_admin_pages_edit( $page_id ) {
 
                         ob_start();
                         wp_editor( $page->post_content, 'description', array() );
-                       
-                    $output .= ob_get_clean();  
-                    $output .= '</div>'; 
-                    $output .= '<div>';
-                    // Org Map
+                        $output .= ob_get_clean();  
 
+                    $output .= '</div>'; 
+
+                    // Org Map
+                    $output .= '<div class="field">';
                         $output .= '<h3 class="hndle">Laboratory Directions</h3>';
 
                         $output .= '<div class="inside">';
                             $output .= '<input type="text" name="organization_directions" id="organization_directions" value="' . get_post_meta( $page->ID, 'organization_directions', true ) . '">';
                         $output .= '</div>';
                     $output .= '</div>';
-                                     
-                    
-$output .= '</div>';
+                $output .= '</div>';
+
                 // Org Logo
                 $output .= '<div class="right">';
 
@@ -197,6 +199,43 @@ $output .= '</div>';
                         $output .= '</div>';
                     $output .= '</div>';
 
+                    // Org Sphere
+                    $output .= '<div class="postbox">';
+                        $output .= '<h3 class="hndle">Laboratory Sphere of Science</h3>';
+
+                        $output .= '<div class="inside">';
+                            $output .= '<div id="taxonomy-laboratory_sphere_of_science" class="categorydiv">';
+                                $output .= '<ul id="category-tabs" class="category-tabs">';
+                                    $output .= '<li class="tabs">';
+                                        $output .= '<a href="#category-all">All Spheres of Science</a>';
+                                    $output .= '</li>';
+                                $output .= '</ul>';
+                                $output .= '<div id="category-all" class="tabs-panel">';
+                                    $output .= '<input type="hidden" name="post_category[]" value="0" />';
+                                    $output .= '<ul id="categorychecklist" data-wp-lists="list:category" class="categorychecklist form-no-clear">';
+                                        foreach ( $all_spheres as $sphere ) {
+                                            $term_selected = '';
+
+                                            foreach ( $selected_spheres as $selected ) {
+                                                if ( $selected == $sphere->term_id ) {
+                                                    $term_selected = ' checked="true"';
+                                                }
+                                            }
+
+                                            $output .= '<li id="category' . $sphere->term_id . '">';
+                                                $output .= '<label class="selectit">';
+                                                    $output .= '<input value="' . $sphere->term_id . '" type="checkbox" name="post_category[]" id="in-category-' . $sphere->term_id . '"' . $term_selected . '/>';
+                                                    $output .= $sphere->name;
+                                                $output .= '</label>';
+                                            $output .= '</li>';
+                                        }
+                                    $output .= '</ul>';
+                                $output .= '</div>';
+                            $output .= '</div>';
+                        $output .= '</div>';
+                    $output .= '</div>';
+
+
 
                     // Groups Users
                     $output .= '<div class="postbox">';
@@ -228,7 +267,7 @@ $output .= '</div>';
 
         // Form Footer
             $output .= '</div>'; // .group.edit
-    $output .= '</form>';
+        $output .= '</form>';
 
     echo $output;
 } // function groups_admin_groups_edit
@@ -257,6 +296,7 @@ function groups_admin_pages_edit_submit() {
             $map = $_POST['organization_map'];
             $directions = $_POST['organization_directions'];
             $page_id = $_POST['page_id'];
+            $spheres = $_POST['post_category'];
             $updates = array();
 
             if ($_POST['members'])
@@ -304,6 +344,13 @@ function groups_admin_pages_edit_submit() {
                 update_post_meta( $page->ID, 'organization_directions', $directions );
             }
 
+            if ( $spheres ) {
+                $ids = [];
+                foreach ( $spheres as $sphere ) {
+                    $ids[] = (int) $sphere;
+                }
+                wp_set_object_terms( $page->ID, $ids, 'laboratory_sphere_of_science', false );
+            }
 
             if ( $members ) {
                 foreach ( $groups_users as $user ) {

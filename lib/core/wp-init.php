@@ -148,23 +148,12 @@ function create_groups_pages()
     );
 
     register_taxonomy(
-        'laboratory_category',
+        'laboratory_sphere_of_science',
         'laboratories',
         array(
-            'label' => __( 'Laboratory Category' ),
-            'rewrite' => array( 'slug' => 'category' ),
+            'label' => __( 'Laboratory Sphere of Science' ),
+            'rewrite' => array( 'slug' => 'sphere' ),
             'hierarchical'  => true,
-            'show_in_menu' => false
-        )
-    );
-
-    register_taxonomy(
-        'laboratory_tag',
-        'laboratories',
-        array(
-            'label' => __( 'Laboratory Tag' ),
-            'rewrite' => array( 'slug' => 'tag' ),
-            'hierarchical'  => false,
             'show_in_menu' => false
         )
     );

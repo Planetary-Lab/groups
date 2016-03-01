@@ -26,7 +26,7 @@ if ( !defined( 'ABSPATH' ) ) {
 /**
  * Show add group form.
  */
-function groups_admin_tags_add() {
+function groups_admin_spheres_add() {
 
 	global $wpdb;
 
@@ -39,12 +39,13 @@ function groups_admin_tags_add() {
 	$current_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	$current_url = remove_query_arg( 'paged', $current_url );
 	$current_url = remove_query_arg( 'action', $current_url );
-	$current_url = remove_query_arg( 'tag', $current_url );
+	$current_url = remove_query_arg( 'sphere', $current_url );
+        $upload_link = esc_url( get_upload_iframe_src( 'image' ) );
 
         // Header for the form
 	$output .= '<form id="edit-page" action="' . esc_url( $current_url ) . '" method="post">';
             $output .= '<div class="group-page edit">';
-                $output .= '<h1 class="group-page-edit__title">Add Laboratory Tag</h1>';
+                $output .= '<h1 class="group-page-edit__title">Add Laboratory Sphere of Science</h1>';
 
         // Core of the form
                 // Org Title
@@ -72,10 +73,22 @@ function groups_admin_tags_add() {
 
                         $output .= '<div id="major-publishing-actions">';
                             $output .= '<div id="publishing-action">';
-                                $output .= wp_nonce_field( 'groups-tags-add', GROUPS_ADMIN_TAGS_NONCE_1, true, false );
+                                $output .= wp_nonce_field( 'groups-spheres-add', GROUPS_ADMIN_SPHERES_NONCE_1, true, false );
                                 $output .= '<input class="button button-primary button-large" type="submit" value="' . __( 'Update', GROUPS_PLUGIN_DOMAIN ) . '"/>';
                                 $output .= '<input type="hidden" value="add" name="action" />';
                             $output .= '</div>';
+                        $output .= '</div>';
+                    $output .= '</div>';
+
+                    $output .= '<div class="postbox">';
+                        $output .= '<h3 class="hndle">Sphere Icon</h3>';
+
+                        $output .= '<div class="form-field">';
+                            $output .= '<div class="custom-img-container"></div>';
+                            $output .= '<a class="upload-custom-img" href="' . $upload_link . '">Upload Sphere Icon</a>';
+                            $output .= '<a class="delete-custom-img hidden" href="#">Remove Icon</a>';
+                            $output .= '<input class="custom-img-id" name="custom-img-id" type="hidden" value="">';
+                            $output .= '<p class="description">Upload a sphere of science icon</p>';
                         $output .= '</div>';
                     $output .= '</div>';
 
@@ -93,7 +106,7 @@ function groups_admin_tags_add() {
  * Handle add group form submission.
  * @return int new group's id or false if unsuccessful
  */
-function groups_admin_tags_add_submit() {
+function groups_admin_spheres_add_submit() {
 
 	global $wpdb;
 
@@ -101,7 +114,7 @@ function groups_admin_tags_add_submit() {
 		wp_die( __( 'Access denied.', GROUPS_PLUGIN_DOMAIN ) );
 	}
 
-	if ( !wp_verify_nonce( $_POST[GROUPS_ADMIN_TAGS_NONCE_1], 'groups-tags-add' ) ) {
+	if ( !wp_verify_nonce( $_POST[GROUPS_ADMIN_SPHERES_NONCE_1], 'groups-spheres-add' ) ) {
 		wp_die( __( 'Access denied.', GROUPS_PLUGIN_DOMAIN ) );
 	}
 
@@ -109,18 +122,29 @@ function groups_admin_tags_add_submit() {
 	$name        = isset( $_POST['title'] ) ? $_POST['title'] : null;
 	$slug        = isset( $_POST['slug'] ) ? $_POST['slug'] : null;
 
-        $tag = wp_insert_term(
+        $sphere = wp_insert_term(
             $name,
-            'laboratory_tag',
+            'laboratory_sphere_of_science',
             array(
                 'description'   => $description,
                 'slug'          => $slug
             )
         );
-
-        if ( is_wp_error( $tag ) ) {
-            Groups_Admin::add_message( __( 'There was an error adding the tag', GROUPS_PLUGIN_DOMAIN ), 'error' );
+        
+        if ( isset( $_POST['custom-img-id'] ) ) {
+            $sphere_id = $sphere['term_id'];
+            $icon = $_POST['custom-img-id'];
+            $sphere_meta = get_option( "taxonomy_$sphere_id" );
+            if ( $sphere_meta['sphere_icon'] != $icon ) {
+                $sphere_meta['sphere_icon'] = $icon;
+            }
+            update_option( "taxonomy_$sphere_id", $sphere_meta );
         }
 
-        return $tag['term_id'];
+
+        if ( is_wp_error( $sphere ) ) {
+            Groups_Admin::add_message( __( 'There was an error adding the sphere', GROUPS_PLUGIN_DOMAIN ), 'error' );
+        }
+
+        return $sphere['term_id'];
 } // function groups_admin_groups_add_submit

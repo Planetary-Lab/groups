@@ -27,13 +27,13 @@ if(!class_exists('WP_List_Table')){
         require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 
-class Groups_Tags_List_Table extends WP_List_Table {
+class Groups_Spheres_List_Table extends WP_List_Table {
     function __construct(){
         global $status, $page;
 
         parent::__construct( array(
-            'singular'  => 'laboratory tag',     //singular name of the listed records
-            'plural'    => 'laboratory tags',    //plural name of the listed records
+            'singular'  => 'laboratory sphere',     //singular name of the listed records
+            'plural'    => 'laboratory spheres',    //plural name of the listed records
             'ajax'      => false        //does this table support ajax?
         ) );
     }
@@ -46,7 +46,7 @@ class Groups_Tags_List_Table extends WP_List_Table {
     function column_title($item){
         //Build row actions
         $actions = array(
-            'edit'      => sprintf('<a href="?page=%s&action=%s&tag=%s">Edit</a>',$_REQUEST['page'],'edit',$item->term_id)
+            'edit'      => sprintf('<a href="?page=%s&action=%s&sphere=%s">Edit</a>',$_REQUEST['page'],'edit',$item->term_id)
         );
         
         //Return the title contents
@@ -93,7 +93,7 @@ class Groups_Tags_List_Table extends WP_List_Table {
         $this->_column_headers = array($columns, $hidden);
         
                 
-        $data = get_terms('laboratory_tag', array( 'hide_empty' => 0 ) );
+        $data = get_terms('laboratory_sphere_of_science', array( 'hide_empty' => 0 ) );
 
         /**
          * REQUIRED for pagination. Let's figure out what page the user is currently 

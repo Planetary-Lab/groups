@@ -154,7 +154,7 @@ class Groups_Admin {
 		include_once( GROUPS_ADMIN_LIB . '/groups-admin-options.php');
 		include_once( GROUPS_ADMIN_LIB . '/groups-admin-add-ons.php');
 		include_once( GROUPS_ADMIN_LIB . '/groups-admin-pages.php');
-		include_once( GROUPS_ADMIN_LIB . '/groups-admin-tags.php');
+		include_once( GROUPS_ADMIN_LIB . '/groups-admin-spheres.php');
 		include_once( GROUPS_ADMIN_LIB . '/groups-admin-categories.php');
 
 		$pages = array();
@@ -233,27 +233,14 @@ class Groups_Admin {
 		add_action( 'admin_print_styles-' . $page, array( __CLASS__, 'admin_print_styles' ) );
 		add_action( 'admin_print_scripts-' . $page, array( __CLASS__, 'admin_print_scripts' ) );
 
-		// lab tags
+		// lab sphere of science
 		$page = add_submenu_page(
 			'groups-admin',
-			__( 'Laboratories Tags', GROUPS_PLUGIN_DOMAIN ),
-			__( 'Tags', GROUPS_PLUGIN_DOMAIN ),
+			__( 'Laboratories Sphere of Science', GROUPS_PLUGIN_DOMAIN ),
+			__( 'Sphere of Science', GROUPS_PLUGIN_DOMAIN ),
 			GROUPS_ACCESS_GROUPS,
-			'groups-admin-tags',
-			apply_filters( 'groups_add_submenu_page_function', 'groups_admin_tags' )
-		);
-		$pages[] = $page;
-		add_action( 'admin_print_styles-' . $page, array( __CLASS__, 'admin_print_styles' ) );
-		add_action( 'admin_print_scripts-' . $page, array( __CLASS__, 'admin_print_scripts' ) );
-
-		// lab categories
-		$page = add_submenu_page(
-			'groups-admin',
-			__( 'Laboratories Categories', GROUPS_PLUGIN_DOMAIN ),
-			__( 'Categories', GROUPS_PLUGIN_DOMAIN ),
-			GROUPS_ACCESS_GROUPS,
-			'groups-admin-categories',
-			apply_filters( 'groups_add_submenu_page_function', 'groups_admin_categories' )
+			'groups-admin-sphere-of-science',
+			apply_filters( 'groups_add_submenu_page_function', 'groups_admin_spheres' )
 		);
 		$pages[] = $page;
 		add_action( 'admin_print_styles-' . $page, array( __CLASS__, 'admin_print_styles' ) );
