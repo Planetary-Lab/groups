@@ -103,7 +103,7 @@ function groups_admin_spheres_edit( $sphere_id ) {
                                 $output .= '<a class="upload-custom-img" href="' . $upload_link . '">Upload Sphere Icon</a>';
                                 $output .= '<a class="delete-custom-img hidden" href="#">Remove Icon</a>';
                             }
-                            $output .= '<input class="custom-img-id" name="custom-img-id" type="hidden" value="">';
+                            $output .= '<input class="custom-img-id" name="custom-img-id" type="hidden" value="' . $sphere_icon_id . '">';
                             $output .= '<p class="description">Upload a sphere of science icon</p>';
                         $output .= '</div>';
                     $output .= '</div>';
