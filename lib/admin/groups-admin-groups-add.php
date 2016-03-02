@@ -161,7 +161,8 @@ function groups_admin_groups_add_submit() {
           'post_title'     => $name,
           'post_type'      => 'laboratories',
           'post_author'    => $creator_id,
-          'post_date'      => $datetime
+          'post_date'      => $datetime,
+          'post_status'    => 'publish'
         );  
 
         $group_page = wp_insert_post( $post_args );
