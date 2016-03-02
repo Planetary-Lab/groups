@@ -156,7 +156,7 @@ function groups_admin_groups_add_submit() {
         // Create the group page
         $post_args = array(
           'post_content'   => $description,
-          'post_name'      => strtolower( str_replace( ' ', '-', $name ) ),
+          'post_name'      => str_replace( ' ', '-', $name ),
           'post_status'    => 'publish',
           'post_title'     => $name,
           'post_type'      => 'laboratories',
