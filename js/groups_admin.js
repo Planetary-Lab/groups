@@ -118,7 +118,7 @@ jQuery(function($){
       photoIdInput.val( attachment.id );
 
       // Hide the add image link
-      addphotoLink.addClass( 'hidden' );
+      addPhotoLink.addClass( 'hidden' );
 
       // Unhide the remove image link
       delPhotoLink.removeClass( 'hidden' );
@@ -138,7 +138,7 @@ jQuery(function($){
     photoContainer.html( '' );
 
     // Un-hide the add image link
-    addphotoLink.removeClass( 'hidden' );
+    addPhotoLink.removeClass( 'hidden' );
 
     // Hide the delete image link
     delPhotoLink.addClass( 'hidden' );
