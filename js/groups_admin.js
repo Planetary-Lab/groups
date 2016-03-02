@@ -121,7 +121,7 @@ jQuery(function($){
       addphotoLink.addClass( 'hidden' );
 
       // Unhide the remove image link
-      delphotoLink.removeClass( 'hidden' );
+      delPhotoLink.removeClass( 'hidden' );
     });
 
     // Finally, open the modal on click
@@ -130,7 +130,7 @@ jQuery(function($){
   
   
   // DELETE IMAGE LINK
-  delphotoLink.on( 'click', function( event ){
+  delPhotoLink.on( 'click', function( event ){
 
     event.preventDefault();
 
@@ -141,7 +141,7 @@ jQuery(function($){
     addphotoLink.removeClass( 'hidden' );
 
     // Hide the delete image link
-    delphotoLink.addClass( 'hidden' );
+    delPhotoLink.addClass( 'hidden' );
 
     // Delete the image id from the hidden input
     photoIdInput.val( '' );
