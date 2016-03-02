@@ -80,7 +80,7 @@ function groups_admin_pages_edit( $page_id ) {
                 $output .= '<div class="left">';
                     $output .= '<div class="field">';
                         $output .= '<input type="text" name="title" id="title" value="' . $page->post_title . '">';
-                        $output .= '<p class="permalink-box"><strong>Permalink:</strong><span class="the-permalink"> ' . get_permalink( $page->ID ) . '</span><a class="button button-small" href="' . get_permalink( $page->ID ) . '">View Laboratory</a></p>';
+                        $output .= '<p class="permalink-box"><strong>Permalink:</strong><span class="the-permalink"> ' . get_post_permalink( $page->ID ) . '</span><a class="button button-small" href="' . get_post_permalink( $page->ID ) . '">View Laboratory</a></p>';
                     $output .= '</div>';
 
                     // Org Description
