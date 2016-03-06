@@ -96,6 +96,24 @@ function groups_admin_groups_remove_submit() {
 	if ( $group ) {
 		if ( $group->name !== Groups_Registered::REGISTERED_GROUP_NAME ) {
 			$result = Groups_Group::delete( $group_id );
+
+                        $pages_args = array(
+                            'post_type' => 'laboratories',
+                            'meta_query' => array(
+                                array(
+                                    'key' => 'group_id',
+                                    'value' => $group_id,
+                                    'compare'   => 'LIKE'
+                                 )
+                            )
+                        );
+
+                        $posts = get_posts( $pages_args );       
+                        if ( $posts ) {
+                            foreach ( $posts as $post ) {
+                                wp_delete_post( $post->ID );
+                            }
+                        }
 		}
 	}
 	return $result;
