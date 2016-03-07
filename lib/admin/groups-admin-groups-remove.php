@@ -102,8 +102,7 @@ function groups_admin_groups_remove_submit() {
                             'meta_query' => array(
                                 array(
                                     'key' => 'group_id',
-                                    'value' => $group_id,
-                                    'compare'   => 'LIKE'
+                                    'value' => $group_id
                                  )
                             )
                         );
