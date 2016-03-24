@@ -107,7 +107,7 @@ function group_id_callback()
     $html .= '</p>';
 
     if ( count($groups) > 0 ) {
-        $html .= '<select name="group_id[]" id="group_id" multiple="multiple" class="select group_ids">';
+        $html .= '<select name="group_id[]" id="group_id" class="select group_ids">';
         
             $html .= '<option value="">Select from your groups:</option>';
             foreach ( $groups as $group ) {
