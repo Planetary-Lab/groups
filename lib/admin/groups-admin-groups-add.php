@@ -170,7 +170,7 @@ function groups_admin_groups_add_submit() {
             Groups_Admin::add_message( __( 'There was an error making the group page', GROUPS_PLUGIN_DOMAIN ), 'error' );
         }
 
-        $result = update_post_meta( $group_page, 'group_id', $group_id );
+        $result = add_post_meta( $group_page, 'group_id', $group_id );
 
 	if ( $group_id ) {
 		if ( !empty( $_POST['capability_ids'] ) ) {
